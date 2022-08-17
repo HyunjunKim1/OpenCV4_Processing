@@ -39,7 +39,7 @@ namespace OpenCV4_Processing
             this.pBox_Test.Location = new System.Drawing.Point(0, 0);
             this.pBox_Test.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pBox_Test.Name = "pBox_Test";
-            this.pBox_Test.Size = new System.Drawing.Size(384, 210);
+            this.pBox_Test.Size = new System.Drawing.Size(1021, 712);
             this.pBox_Test.TabIndex = 0;
             this.pBox_Test.TabStop = false;
             // 
@@ -47,7 +47,7 @@ namespace OpenCV4_Processing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 210);
+            this.ClientSize = new System.Drawing.Size(1021, 712);
             this.Controls.Add(this.pBox_Test);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
