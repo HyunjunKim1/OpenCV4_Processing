@@ -1,13 +1,5 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OpenCV4_Processing
@@ -32,75 +24,75 @@ namespace OpenCV4_Processing
 
         private void CheckMerging()
         {
-            // C# 에서는 using (Mat ~~~ ) 으로 using을 사용하면 dispose 해주지 않아도 된다.
+            using(_chuckImg = new Mat())
+            using(_stageImg = new Mat())
+            using(logo_mask = new Mat())
+            using(_stageImg_cut = new Mat())
+            using(Img1 = new Mat())
+            using(Img2 = new Mat())
+            using(temp = new Mat())
+            {
+                _chuckImg = BitmapConverter.ToMat(Properties.Resources.WAFER);
+                _stageImg = BitmapConverter.ToMat(Properties.Resources.STAGE);
 
-            _chuckImg = new Mat();
-            _stageImg = new Mat();
-            logo_mask = new Mat();
-            _stageImg_cut = new Mat();
-            Img1 = new Mat();
-            Img2 = new Mat();
-            temp = new Mat();
+                // 채널 분류
+                Cv2.Split(_chuckImg, out Split);
+                Cv2.ImShow("src", _chuckImg);
+                Cv2.ImShow("Split[0]", Split[0]);     // B
+                Cv2.ImShow("Split[1]", Split[1]);     // G
+                Cv2.ImShow("Split[2]", Split[2]);     // R
+                Cv2.ImShow("Split[3]", Split[3]);     // A
 
-            _chuckImg = BitmapConverter.ToMat(Properties.Resources.WAFER);
-            _stageImg = BitmapConverter.ToMat(Properties.Resources.STAGE);
+                // 합칠 이미지 배경 지우기위한 mask 
+                Cv2.Threshold(Split[3], logo_mask, 240, 255, ThresholdTypes.Binary);
 
-            // 채널 분류
-            Cv2.Split(_chuckImg, out Split);
-            Cv2.ImShow("src", _chuckImg);
-            Cv2.ImShow("Split[0]", Split[0]);     // B
-            Cv2.ImShow("Split[1]", Split[1]);     // G
-            Cv2.ImShow("Split[2]", Split[2]);     // R
-            Cv2.ImShow("Split[3]", Split[3]);     // A
+                // 색반전
+                Cv2.BitwiseNot(logo_mask, logo_mask);
 
-            // 합칠 이미지 배경 지우기위한 mask 
-            Cv2.Threshold(Split[3], logo_mask, 240, 255, ThresholdTypes.Binary);
+                /*
+                 * 배경 이미지에서 합칠 이미지 크기만큼 잘라낼 Rect 
+                 * 이후 Rect의 X,Y 위치부터 합칠 이미지 크기까지 설정
+                 */
+                Rect RectInfo = new Rect(new OpenCvSharp.Point(110, 540), new OpenCvSharp.Size(Split[3].Width, Split[3].Height));
 
-            // 색반전
-            Cv2.BitwiseNot(logo_mask, logo_mask);
+                // 사각형 크기만큼 잘라냄
+                _stageImg_cut = _stageImg[RectInfo];
 
-            /*
-             * 배경 이미지에서 합칠 이미지 크기만큼 잘라낼 Rect 
-             * 이후 Rect의 X,Y 위치부터 합칠 이미지 크기까지 설정
-             */
-            Rect RectInfo = new Rect(new OpenCvSharp.Point(50, 50), new OpenCvSharp.Size(Split[3].Width, Split[3].Height));
+                // Image1에 합칠 이미지 연산 후 저장
+                Cv2.BitwiseAnd(_chuckImg, _chuckImg, Img1);
 
-            // 사각형 크기만큼 잘라냄
-            _stageImg_cut = _stageImg[RectInfo];
+                // Image2에 배경 이미지 연산 후 저장
+                Cv2.BitwiseAnd(_stageImg_cut, _stageImg_cut, Img2, mask: logo_mask);
 
-            // Image1에 합칠 이미지 연산 후 저장
-            Cv2.BitwiseAnd(_chuckImg, _chuckImg, Img1);
+                // 이미지 두개를 Temp Mat에 저장 후에 배경이미지 잘라낸 부분에 저장
+                Cv2.Add(Img1, Img2, temp);
+                _stageImg[RectInfo] = temp;
 
-            // Image2에 배경 이미지 연산 후 저장
-            Cv2.BitwiseAnd(_stageImg_cut, _stageImg_cut, Img2, mask: logo_mask);
+                // 합친 이미지 배경이미지에 저장
+                pBox_Test.Image = BitmapConverter.ToBitmap(_stageImg);
 
-            // 이미지 두개를 Temp Mat에 저장 후에 배경이미지 잘라낸 부분에 저장
-            Cv2.Add(Img1, Img2, temp);
-            _stageImg[RectInfo] = temp;
-
-            // 합친 이미지 배경이미지에 저장
-            pBox_Test.Image = BitmapConverter.ToBitmap(_stageImg);
-
-            // 이미지 메모리 해제
-            logo_mask.Release();
-            logo_mask.Dispose();
-            logo_mask = null;
-
-            _stageImg_cut.Release();
-            _stageImg_cut.Dispose();
-            _stageImg_cut = null;
-
-            Img1.Release();
-            Img1.Dispose();
-            Img1 = null;
-
-            Img2.Release();
-            Img2.Dispose();
-            Img2 = null;
-
-            temp.Release();
-            temp.Dispose();
-            temp = null;
+                //// 이미지 메모리 해제
+                //logo_mask.Release();
+                //logo_mask.Dispose();
+                //logo_mask = null;
+                //
+                //_stageImg_cut.Release();
+                //_stageImg_cut.Dispose();
+                //_stageImg_cut = null;
+                //
+                //Img1.Release();
+                //Img1.Dispose();
+                //Img1 = null;
+                //
+                //Img2.Release();
+                //Img2.Dispose();
+                //Img2 = null;
+                //
+                //temp.Release();
+                //temp.Dispose();
+                //temp = null;
+            }
+            
 
         }
     }

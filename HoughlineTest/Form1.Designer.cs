@@ -1,5 +1,5 @@
 ﻿
-namespace OpenCV4_Processing
+namespace HoughlineTest
 {
     partial class Form1
     {
@@ -37,10 +37,8 @@ namespace OpenCV4_Processing
             // 
             this.pBox_Test.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pBox_Test.Location = new System.Drawing.Point(0, 0);
-            this.pBox_Test.Margin = new System.Windows.Forms.Padding(2);
             this.pBox_Test.Name = "pBox_Test";
-            this.pBox_Test.Size = new System.Drawing.Size(1021, 881);
-            this.pBox_Test.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pBox_Test.Size = new System.Drawing.Size(484, 461);
             this.pBox_Test.TabIndex = 0;
             this.pBox_Test.TabStop = false;
             // 
@@ -48,9 +46,8 @@ namespace OpenCV4_Processing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1021, 881);
+            this.ClientSize = new System.Drawing.Size(484, 461);
             this.Controls.Add(this.pBox_Test);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pBox_Test)).EndInit();

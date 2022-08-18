@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.32630.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageMerging", "OpenCV4_Processing\ImageMerging.csproj", "{E1C7C103-6F69-49C8-8090-869261D93849}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoughlineTest", "HoughlineTest\HoughlineTest.csproj", "{006C7935-8E0A-4299-BBD8-5981FD105541}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E1C7C103-6F69-49C8-8090-869261D93849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1C7C103-6F69-49C8-8090-869261D93849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1C7C103-6F69-49C8-8090-869261D93849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006C7935-8E0A-4299-BBD8-5981FD105541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006C7935-8E0A-4299-BBD8-5981FD105541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006C7935-8E0A-4299-BBD8-5981FD105541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006C7935-8E0A-4299-BBD8-5981FD105541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
