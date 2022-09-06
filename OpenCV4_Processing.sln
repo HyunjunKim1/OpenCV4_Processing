@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageMerging", "OpenCV4_Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoughlineTest", "HoughlineTest\HoughlineTest.csproj", "{006C7935-8E0A-4299-BBD8-5981FD105541}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamma", "Gamma\Gamma.csproj", "{3CB90556-47BA-4E65-AB38-FE8B892D112F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{006C7935-8E0A-4299-BBD8-5981FD105541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006C7935-8E0A-4299-BBD8-5981FD105541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006C7935-8E0A-4299-BBD8-5981FD105541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CB90556-47BA-4E65-AB38-FE8B892D112F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CB90556-47BA-4E65-AB38-FE8B892D112F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CB90556-47BA-4E65-AB38-FE8B892D112F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CB90556-47BA-4E65-AB38-FE8B892D112F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
