@@ -28,7 +28,7 @@ namespace Gamma
         {
             _gamma = new Mat();
 
-            double GammaValue = 2;
+            double GammaValue = 0.3;
 
             byte[] lut = new byte[256];
 
