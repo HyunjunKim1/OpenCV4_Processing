@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateMatching", "Templat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveBackground", "RemoveBackground\RemoveBackground.csproj", "{319AB34A-714A-4593-AC60-4283B2AB08F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryComparison_HuMoment", "GeometryComparison_HuMoment\GeometryComparison_HuMoment.csproj", "{997F3ABF-E533-483D-AA5D-BDE4F66D4E45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapesMatching", "GeometryComparison_HuMoment\ShapesMatching.csproj", "{997F3ABF-E533-483D-AA5D-BDE4F66D4E45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

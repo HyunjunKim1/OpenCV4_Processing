@@ -1,5 +1,5 @@
 ﻿
-namespace GeometryComparison_HuMoment
+namespace ShapesMatching
 {
     partial class Form1
     {
