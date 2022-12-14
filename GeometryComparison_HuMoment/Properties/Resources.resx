@@ -130,6 +130,18 @@
   <data name="pattern_nut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resourses\pattern_nut.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PinImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PinImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PinImage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PinImage1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin_roi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pin_roi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin_roi1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pin_roi1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="test1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resourses\test1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -138,6 +150,12 @@
   </data>
   <data name="test3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resourses\test3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="testet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resourses\testet.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="testetroi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resourses\testetroi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="testroi" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resourses\testroi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

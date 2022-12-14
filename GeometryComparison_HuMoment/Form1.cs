@@ -37,24 +37,43 @@ namespace ShapesMatching
             //Cv2.CvtColor(mat, mat, ColorConversionCodes.BGR2GRAY);
             Mat mat = new Mat();
 
-            if (bmp.PixelFormat == AVAILABLE_PIXEL_FORMAT)
-            {
-                mat = BitmapConverter.ToMat(bmp);
-                mat = DetectImageContour(mat);
-            }
-            else
-            {
-                bmp = ConvertTo24bpp(bmp);
+            //if (bmp.PixelFormat == AVAILABLE_PIXEL_FORMAT)
+            //{
+            //    mat = BitmapConverter.ToMat(bmp);
+            //    //mat = DetectImageContour(mat);
+            //}
+            //else
+            //{
+            //    bmp = ConvertTo24bpp(bmp);
+            //
+            //    mat = BitmapConverter.ToMat(bmp);
+            //    //mat = DetectImageContour(mat);
 
-                mat = BitmapConverter.ToMat(bmp);
-                mat = DetectImageContour(mat);
-            }
+            //}
 
-            //Cv2.Threshold(mat, mat, thresh: 87, maxval: 255, ThresholdTypes.BinaryInv);
-
+            mat = BitmapConverter.ToMat(bmp);
             Cv2.CvtColor(mat, mat, ColorConversionCodes.BGR2GRAY);
 
-            Cv2.FindContours(mat, out Point[][] contours, out HierarchyIndex[] hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+            /*##################################################################################################################################################
+             * 밑에꺼 함수원형임
+             *                                (윤곽 찾을 이미지, 찾은 윤곽선 좌표      , 윤곽검출 계층정보             , 검색방법           , 근사화 방법)
+             * public static void FindContours(InputArray image, out Point[][] contours, out HierarchyIndex[] hierarchy, RetrievalModes mode, ContourApproximationModes method);
+             * 
+             * RetrievalMode 검색방법 종류
+             * ｜ External : 외부 윤곽만 검출, 계층정보 x  ｜ 
+             * ｜ List     : 모든 윤곽 검출, 계층정보 x    ｜ 
+             * ｜ Ccomp    : 모든 윤곽 검출, 계층정보 2단계｜
+             * ｜ Tree     : 모든 윤곽 검출, 모든 계층정보 ｜
+             * 
+             * ContourApproximationMode 근사화 방법 종류              ｜
+             * ｜ ApproxNone     : 모든 윤곽점 반환                   ｜
+             * ｜ ApproxSimple   : 윤곽점들 단순화, 끝점만 반환       ｜
+             * ｜ ApproxTC89L1   : 프리먼 체인 코드에서의 윤곽선 적용 ｜
+             * ｜ ApproxTC89KCOS : 프리먼 체인 코드에서의 윤곽선 적용 ｜ 
+             * ##################################################################################################################################################*/
+
+            Cv2.Threshold(mat, mat, thresh: 87, maxval: 255, ThresholdTypes.BinaryInv);
+            Cv2.FindContours(mat, out Point[][] contours, out HierarchyIndex[] hierarchy, RetrievalModes.CComp, ContourApproximationModes.ApproxNone);
 
             return (mat, contours, hierarchy);
         }
@@ -65,7 +84,7 @@ namespace ShapesMatching
             HierarchyIndex[] hierarchy1;
 
             Mat pattern;
-            (pattern, contours1, hierarchy1) = FindContours(Properties.Resources.pattern_nut);
+            (pattern, contours1, hierarchy1) = FindContours(Properties.Resources.Pin_roi);
 
             Cv2.ImShow("pattern", pattern);
 
@@ -73,7 +92,7 @@ namespace ShapesMatching
             HierarchyIndex[] hierarchy2;
 
             Mat data;
-            (data, contours2, hierarchy2) = FindContours(Properties.Resources.data);
+            (data, contours2, hierarchy2) = FindContours(Properties.Resources.PinImage);
 
             var output = new Mat();
             Cv2.CvtColor(data, output, ColorConversionCodes.GRAY2BGR);
@@ -82,7 +101,7 @@ namespace ShapesMatching
 
             // 지직 거리는 노이즈 날리기
             ////////////////////////////////////////////////////
-            for (int i = 0; i < contours2.GetLength(0); ++i)
+            for (int i = 0; i < contours2.GetLength(0); i++)
             {
                 var area = Cv2.ContourArea(contours2[i].ToArray());
 
@@ -95,14 +114,20 @@ namespace ShapesMatching
             }
             ///////////////////////////////////////////////////
 
-            for (int i = 0; i < contours2.GetLength(0); ++i)
+            int min, max;
+            for (int i = 0; i < contours2.GetLength(0); i++)
             {
+                int cnt = contours2[i].Count();
+
+                // 찾은게 윤곽선 좌표 개수가 말도안되게 많을 경우 무시해주기
+                if (cnt >= 1000)
+                    continue;
+
                 var area = Cv2.ContourArea(contours2[i].ToArray());
 
+                // 찾은 윤곽선 면적이 말도안되게 작을 경우 무시해주기
                 if (area < 100)
-                {
                     continue;
-                }
 
                 var rect = Cv2.BoundingRect(contours2[i]);
 
@@ -111,16 +136,18 @@ namespace ShapesMatching
                 centroid.X = (int)(moments.M10 / moments.M00);
                 centroid.Y = (int)(moments.M01 / moments.M00);
 
-                double ratio = Cv2.MatchShapes(data[rect], pattern, ShapeMatchModes.I1);
-                if(ratio < 0.05)
+                double ratio = Cv2.MatchShapes(data[rect], pattern, ShapeMatchModes.I3);
+                if(ratio < 0.5)
                 {
-                    output.PutText(ratio.ToString("F3"), rect.TopLeft, HersheyFonts.HersheySimplex, fontScale: 0.8, Scalar.White);
+                    output.PutText(ratio.ToString("F3"), rect.TopLeft, HersheyFonts.HersheySimplex, fontScale: 0.8, Scalar.Black);
                     output.Rectangle(rect, Scalar.GreenYellow);
                 }
             }
 
             Cv2.ImShow("output", output);
         }
+
+
         private Mat DetectImageContour(Mat mat)
         {
             Bitmap targetBitmap = BitmapConverter.ToBitmap(mat);

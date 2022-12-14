@@ -139,6 +139,24 @@
   <ItemGroup>
     <None Include="Resourses\testroi2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resourses\testet.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resourses\testetroi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PinImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin_roi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PinImage1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin_roi1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
