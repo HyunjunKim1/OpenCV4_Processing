@@ -72,8 +72,8 @@ namespace ShapesMatching
              * ｜ ApproxTC89KCOS : 프리먼 체인 코드에서의 윤곽선 적용 ｜ 
              * ##################################################################################################################################################*/
 
-            Cv2.Threshold(mat, mat, thresh: 87, maxval: 255, ThresholdTypes.BinaryInv);
-            Cv2.FindContours(mat, out Point[][] contours, out HierarchyIndex[] hierarchy, RetrievalModes.CComp, ContourApproximationModes.ApproxNone);
+            Cv2.Threshold(mat, mat, thresh: 87, maxval: 255, ThresholdTypes.Binary);
+            Cv2.FindContours(mat, out Point[][] contours, out HierarchyIndex[] hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxNone);
 
             return (mat, contours, hierarchy);
         }
@@ -113,8 +113,13 @@ namespace ShapesMatching
                 }
             }
             ///////////////////////////////////////////////////
-
             int min, max;
+            min = max = 0;
+            double ave = 0;
+            List<(double lave, int idx)> ans = new List<(double lave, int idx)>();
+
+            // 개선된 브루트포스 알고리즘 사용
+            // 윤곽선의 좌표는 우하좌상으로 들어있음
             for (int i = 0; i < contours2.GetLength(0); i++)
             {
                 int cnt = contours2[i].Count();
@@ -126,20 +131,90 @@ namespace ShapesMatching
                 var area = Cv2.ContourArea(contours2[i].ToArray());
 
                 // 찾은 윤곽선 면적이 말도안되게 작을 경우 무시해주기
-                if (area < 100)
+                if (area < 500)
                     continue;
 
-                var rect = Cv2.BoundingRect(contours2[i]);
+                // 왼쪽 끝 핀 위치 구하기
+                for (int j = 0; j < contours2[i].Count(); j++)
+                {
+                    min += contours2[i][j].X;
+                }
+                ave = min / cnt;
 
-                var moments = Cv2.Moments(contours2[i]);
-                Point centroid = new Point();
-                centroid.X = (int)(moments.M10 / moments.M00);
-                centroid.Y = (int)(moments.M01 / moments.M00);
+                ans.Add((ave, i));
+                min = 0; ave = 0;
+            }
+
+            ans.Sort();
+            //var sort = ans.OrderBy(x => x.idx).ThenBy(x => x.lave).ToList();
+
+
+            /*##################################################################################################################################################
+             * 밑에꺼 함수원형임
+             *                (중심을 찾을 Contours 배열, BinaryImage인지 아닌지);
+             * Moments Moments(IEnumerable<Point> array, bool binaryImage = false);
+             * 
+             * <<Moment 종류>>
+             * 공간 모멘트
+             * ｜ m00,m01,m10｜ 
+             * ｜ m11,m20,m02｜ 
+             * ｜ m30,m21,m12｜
+             * ｜ m03        ｜
+             * 
+             * 중심 모멘트
+             * ｜ mu20,mu11,mu02｜
+             * ｜ mu30,mu21,mu12｜
+             * ｜ mu03          ｜
+             * 
+             * 평준화 중심 모멘트
+             * ｜ nu20,nu11,nu02｜
+             * ｜ nu30,nu21,nu12｜
+             * ｜ nu03          ｜
+             * 
+             * https://en.wikipedia.org/wiki/Image_moment
+             * ##################################################################################################################################################*/
+
+            {
+                var rect = Cv2.BoundingRect(contours2[ans[0].idx]);
+
+                // Moment 찾을 Contours
+                var moments = Cv2.Moments(contours2[ans[0].idx]);
+                
+                // Contours의 무게중심을 찾을 좌표 
+                Point Center = new Point();
+
+                /* 질량중심 Center X,Y 구하는 공식 
+                 * Center X = (m10 / m00)
+                 * Center Y = (m01 / m00)
+                 */
+                Center.X = (int)(moments.M10 / moments.M00);
+                Center.Y = (int)(moments.M01 / moments.M00);
+
+                Cv2.Circle(output, Center, 3, Scalar.Red, -1, LineTypes.AntiAlias);
 
                 double ratio = Cv2.MatchShapes(data[rect], pattern, ShapeMatchModes.I3);
                 if(ratio < 0.5)
                 {
-                    output.PutText(ratio.ToString("F3"), rect.TopLeft, HersheyFonts.HersheySimplex, fontScale: 0.8, Scalar.Black);
+                    output.PutText(ratio.ToString("F3"), rect.TopLeft, HersheyFonts.HersheySimplex, fontScale: 0.8, Scalar.White);
+                    output.Rectangle(rect, Scalar.Blue);
+                }
+            }
+
+            ans.Reverse();
+
+            // 오른쪽 Test
+            {
+                var rect = Cv2.BoundingRect(contours2[ans[0].idx]);
+
+                var moments = Cv2.Moments(contours2[ans[0].idx]);
+                Point Center = new Point();
+                Center.X = (int)(moments.M10 / moments.M00);
+                Center.Y = (int)(moments.M01 / moments.M00);
+                Cv2.Circle(output, Center, 3, Scalar.Red, -1, LineTypes.AntiAlias);
+                double ratio = Cv2.MatchShapes(data[rect], pattern, ShapeMatchModes.I3);
+                if (ratio < 0.5)
+                {
+                    output.PutText(ratio.ToString("F3"), rect.TopLeft, HersheyFonts.HersheySimplex, fontScale: 0.8, Scalar.White);
                     output.Rectangle(rect, Scalar.GreenYellow);
                 }
             }
