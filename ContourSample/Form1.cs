@@ -25,9 +25,8 @@ namespace ContourSample
         public void ImageProcessing()
         {
             Mat src = BitmapConverter.ToMat(Properties.Resources.Image);
-            Mat src1 = new Mat(), src2 = new Mat();
-            src.CopyTo(src1);
-            src.CopyTo(src2);
+            Mat temp = new Mat();
+            src.CopyTo(temp);
             Cv2.ImShow("scr", src);
 
             Mat bin = new Mat();
@@ -41,9 +40,9 @@ namespace ContourSample
 
             for (int i = 0; i < contour1.Length; i++)
             {
-                Cv2.DrawContours(src1, contour1, i, Scalar.Red, 1, LineTypes.AntiAlias);
+                Cv2.DrawContours(temp, contour1, i, Scalar.Red, 1, LineTypes.AntiAlias);
             }
-            Cv2.ImShow("1", src1);
+            Cv2.ImShow("result", temp);
         }
     }
 }
