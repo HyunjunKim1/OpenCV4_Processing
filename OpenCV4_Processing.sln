@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32630.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageMerging", "OpenCV4_Processing\ImageMerging.csproj", "{E1C7C103-6F69-49C8-8090-869261D93849}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContourSample", "ContourSample\ContourSample.csproj", "{BA269951-BC19-4592-A3B6-25775B1E73F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit_operation", "Bit_operation\Bit_operation.csproj", "{5D3647B7-3CA0-4A27-8AC0-4A63BFB4CD59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeHistogram", "MakeHistogram\MakeHistogram.csproj", "{C0851516-0061-4F1E-9A05-7C7713353E77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{5D3647B7-3CA0-4A27-8AC0-4A63BFB4CD59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D3647B7-3CA0-4A27-8AC0-4A63BFB4CD59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D3647B7-3CA0-4A27-8AC0-4A63BFB4CD59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0851516-0061-4F1E-9A05-7C7713353E77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0851516-0061-4F1E-9A05-7C7713353E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0851516-0061-4F1E-9A05-7C7713353E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0851516-0061-4F1E-9A05-7C7713353E77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
