@@ -92,10 +92,23 @@ namespace MakeHistogram
             myBarG.Bar.Fill.Type = ZedGraph.FillType.Solid;
             myBarB.Bar.Fill.Type = ZedGraph.FillType.Solid;
 
+            pane.XAxis.Scale.Min = 0;
+            pane.XAxis.Scale.Max = histogram[2].Length;
+            pane.YAxis.Scale.Min = 0;
+            pane.YAxis.Scale.Max = histogram[2].Max();
+
+            pane1.XAxis.Scale.Min = 0;
+            pane1.XAxis.Scale.Max = histogram[1].Length;
+            pane1.YAxis.Scale.Min = 0;
+            pane1.YAxis.Scale.Max = histogram[1].Max();
+
+            pane2.XAxis.Scale.Min = 0;
+            pane2.XAxis.Scale.Max = histogram[0].Length;
+            pane2.YAxis.Scale.Min = 0;
+            pane2.YAxis.Scale.Max = histogram[0].Max();
+
             zG_R.Invalidate();
-
-            zG_G.Invalidate();
-
+            zG_G.Invalidate(); 
             zG_B.Invalidate();
         }
         public Bitmap getChannelImage(CalculateBit bits, int ch, int numCh)
