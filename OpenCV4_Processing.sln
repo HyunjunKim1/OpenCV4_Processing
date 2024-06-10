@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit_operation", "Bit_operat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeHistogram", "MakeHistogram\MakeHistogram.csproj", "{C0851516-0061-4F1E-9A05-7C7713353E77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLAHE", "CLAHE\CLAHE.csproj", "{CD1F31BD-72FB-4EB3-8A56-FA25D336139A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{C0851516-0061-4F1E-9A05-7C7713353E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0851516-0061-4F1E-9A05-7C7713353E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0851516-0061-4F1E-9A05-7C7713353E77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD1F31BD-72FB-4EB3-8A56-FA25D336139A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD1F31BD-72FB-4EB3-8A56-FA25D336139A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD1F31BD-72FB-4EB3-8A56-FA25D336139A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD1F31BD-72FB-4EB3-8A56-FA25D336139A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
