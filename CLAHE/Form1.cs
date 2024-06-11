@@ -22,7 +22,8 @@ namespace CLAHE
         {
             InitializeComponent();
 
-            Run();
+            //Run();
+            Clahe();
         }
 
         /// <summary>
@@ -32,54 +33,104 @@ namespace CLAHE
         /// 3. 정규화는 Histogram 분포가 집중되어있는 경우 효과적이지만 아닐 경우 평탄화가 필요.
         /// 4. 평탄화 후 CLAHE 작업. (Contrast Limited Adaptive Histogram Equalization)
         /// </summary>
+        
+        private void Clahe()
+        {
+            Mat gray = src.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Mat dst1 = new Mat();
+            Mat dst2 = new Mat();
+            Mat dst3 = new Mat();
+            Mat dst4 = new Mat();
+            Mat dst5 = new Mat();
+            Mat dst6 = new Mat();
+            using (var clahe = Cv2.CreateCLAHE())
+            {
+                clahe.ClipLimit = 2.0;
+                clahe.Apply(gray, dst1);
+                clahe.ClipLimit = 8.0;
+                clahe.Apply(gray, dst2);
+                clahe.ClipLimit = 14.0;
+                clahe.Apply(gray, dst3);
+
+
+                clahe.ClipLimit = 4.5;
+                clahe.TilesGridSize = new Size(4, 4);
+                clahe.Apply(gray, dst4);
+
+                clahe.ClipLimit = 4.5;
+                clahe.TilesGridSize = new Size(8, 8);
+                clahe.Apply(gray, dst5);
+
+                clahe.ClipLimit = 4.5;
+                clahe.TilesGridSize = new Size(12, 12);
+                clahe.Apply(gray, dst6);
+            }
+
+            using (new Window("gray",  gray))
+            using (new Window("clip2.0", dst1))
+            using (new Window("clip8.0",  dst2))
+            using (new Window("clip14.0", dst3))
+            using (new Window("tile4x4", dst4))
+            using (new Window("tile8x8",  dst5))
+            using (new Window("tile12x12", dst6))
+            {
+                Cv2.WaitKey();
+                Cv2.DestroyAllWindows();
+            }
+        }
+
         private void Run()
         {
-            CalcImageHistogram();
-        }
-        private void CalcImageHistogram()
-        {
-            Mat color = new Mat();
-            Mat histB = new Mat();
-            Mat histG = new Mat();
-            Mat histR = new Mat();
+            // gray scale
+            Mat gray = src.CvtColor(ColorConversionCodes.BGR2GRAY);
 
-            // 모든요소가 1로 초기화된 행렬 생성
-            Mat resultB = Mat.Ones(new Size(256, src.Height), MatType.CV_8UC3);
-            Mat resultG = Mat.Ones(new Size(256, src.Height), MatType.CV_8UC3);
-            Mat resultR = Mat.Ones(new Size(256, src.Height), MatType.CV_8UC3);
+            // Histogram View
+            const int Width = 260;
+            const int Height = 200;
 
-            // 투명도 알파도 추가되도록 Cvt
-            Cv2.CvtColor(src, color, ColorConversionCodes.BGR2BGRA);
+            Mat render = new Mat(new Size(Width, Height), MatType.CV_8UC3, Scalar.All(255));
 
-            Cv2.CalcHist(new Mat[] { color }, new int[] { 0 }, null, histB, 1, new int[] { 256 }, new Rangef[] { new Rangef(0, 256) });
-            Cv2.Normalize(histB, histB, 0, 255, NormTypes.MinMax);
+            // Calculate histogram
+            Mat hist = new Mat();
+            
+            // histogram size for each dimension
+            int[] hdims = { 256 };
+            Rangef[] ranges = { new Rangef(0, 256), };
 
-            Cv2.CalcHist(new Mat[] { color }, new int[] { 1 }, null, histG, 1, new int[] { 256 }, new Rangef[] { new Rangef(0, 256) });
-            Cv2.Normalize(histG, histG, 0, 255, NormTypes.MinMax);
+            Cv2.CalcHist(
+                new Mat[] { gray }, // Mat 이미지들
+                new int[] { 0 },    // 채널. Grayscale = 0, R,G,B = 0,1,2
+                null,               // Mask : all area = null
+                hist,               // output
+                1,                  // dims
+                hdims,              // hist size
+                ranges);            // range
 
-            Cv2.CalcHist(new Mat[] { color }, new int[] { 2 }, null, histR, 1, new int[] { 256 }, new Rangef[] { new Rangef(0, 256) });
-            Cv2.Normalize(histR, histR, 0, 255, NormTypes.MinMax);
+            // Get the max value of histogram
+            double minVal, maxVal;
+            Cv2.MinMaxLoc(hist, out minVal, out maxVal);
 
-            for (int i = 0; i < histB.Rows; i++)
+            Scalar color = Scalar.All(100);
+
+            // Scales and draws histogram
+            hist = hist * (maxVal != 0 ? Height / maxVal : 0.0);
+            for (int j = 0; j < hdims[0]; ++j)
             {
-                Cv2.Line(resultB, new Point(i, src.Height), new Point(i, src.Height - histB.Get<float>(i)), Scalar.Blue);
-            }
-            for (int i = 0; i < histG.Rows; i++)
-            {
-                Cv2.Line(resultG, new Point(i, src.Height), new Point(i, src.Height - histG.Get<float>(i)), Scalar.Green);
-            }
-            for (int i = 0; i < histR.Rows; i++)
-            {
-                Cv2.Line(resultR, new Point(i, src.Height), new Point(i, src.Height - histR.Get<float>(i)), Scalar.Red);
+                int binW = (int)((double)Width / hdims[0]);
+                render.Rectangle(
+                    new Point(j * binW, render.Rows - (int)hist.Get<float>(j)),
+                    new Point((j + 1) * binW, render.Rows),
+                    color,
+                    -1);
             }
 
-            Cv2.ImShow("img", color);
-            Cv2.ImShow("Blue", resultB);
-            Cv2.ImShow("Green", resultG);
-            Cv2.ImShow("Red", resultR);
-            Cv2.WaitKey(0);
-            Cv2.DestroyAllWindows();
-
+            using (new Window("Image",  gray))
+            using (new Window("Histogram", render))
+            {
+                Cv2.WaitKey();
+                Cv2.DestroyAllWindows();
+            }
         }
     }
 }
+    
